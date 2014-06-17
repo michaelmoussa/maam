@@ -1,0 +1,20 @@
+{
+    "name": "michaelmoussa/maam",
+    "description": "(M)agic (A)ccessors (A)nd (M)utators",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Moussa",
+            "email": "michael.moussa@gmail.com"
+        }
+    ],
+    "require": {
+        "doctrine/annotations": "~1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "Moose\\Maam\\": ["src/"]
+        }
+    },
+    "bin": ["bin/maam.php"]
+}
