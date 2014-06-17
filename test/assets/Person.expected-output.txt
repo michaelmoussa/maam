@@ -1,0 +1,66 @@
+<?php
+
+namespace MaamTest;
+
+use Moose\Maam\Annotation as Maam;
+
+class Person
+{
+    /**
+     * @Maam\Getter
+     */
+    protected $firstName;
+
+    /**
+     * @Maam\Setter
+     */
+    protected $lastName;
+
+    /**
+     * @Maam\Getter
+     * @Maam\Setter
+     */
+    protected $dateOfBirth;
+
+    /**
+     * Sets the firstName.
+     *
+     * @param mixed $firstName
+     * @return void
+     */
+    public function setFirstName($firstName)
+    {
+        $this->firstName = $firstName;
+    }
+
+    /**
+     * Gets the lastName.
+     *
+     * @return mixed
+     */
+    public function getLastName()
+    {
+        return $this->lastName;
+    }
+
+    /**
+     * Sets the dateOfBirth.
+     *
+     * @param mixed $dateOfBirth
+     * @return void
+     */
+    public function setDateOfBirth($dateOfBirth)
+    {
+        $this->dateOfBirth = $dateOfBirth;
+    }
+
+    /**
+     * Gets the dateOfBirth.
+     *
+     * @return mixed
+     */
+    public function getDateOfBirth()
+    {
+        return $this->dateOfBirth;
+    }
+}
