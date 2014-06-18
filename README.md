@@ -1,3 +1,6 @@
+[![Build Status](https://travis-ci.org/michaelmoussa/maam.svg?branch=master)](https://travis-ci.org/michaelmoussa/maam)
+[![Coverage Status](https://coveralls.io/repos/michaelmoussa/maam/badge.png)](https://coveralls.io/r/michaelmoussa/maam)
+
 # (M)agic (A)ccessors (A)nd (M)utators
 
 Spare yourself the tedium of writing and testing countless getters and setters by generating them automagically!

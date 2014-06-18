@@ -12,3 +12,6 @@ script:
     - vendor/bin/phpunit -c test/phpunit.xml
     - php .coverage-checker.php build/coverage-clover.xml 100
     - vendor/bin/phpcs --standard=PSR2 -s -p src/ -p test/
+
+after_script:
+    - php vendor/bin/coveralls
