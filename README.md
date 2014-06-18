@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/michaelmoussa/maam.svg?branch=master)](https://travis-ci.org/michaelmoussa/maam)
 [![Coverage Status](https://coveralls.io/repos/michaelmoussa/maam/badge.png)](https://coveralls.io/r/michaelmoussa/maam)
+[![Latest Stable Version](https://poser.pugx.org/michaelmoussa/maam/v/stable.png)](https://packagist.org/packages/michaelmoussa/maam)
 
 # (M)agic (A)ccessors (A)nd (M)utators
 
