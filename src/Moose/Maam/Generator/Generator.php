@@ -36,6 +36,11 @@ class Generator
     public function generate($sourcePath)
     {
         $generatedDir = __DIR__ . '/../../../../generated';
+
+        if (!file_exists($generatedDir)) {
+            mkdir($generatedDir, 0777, true);
+        }
+
         $classMap = [];
         $objects = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($sourcePath),
@@ -50,10 +55,6 @@ class Generator
                     $classMap[$result['class']] = $result['path'];
                 }
             }
-        }
-
-        if (!file_exists($generatedDir)) {
-            mkdir($generatedDir, 0777, true);
         }
 
         file_put_contents(
