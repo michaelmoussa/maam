@@ -160,3 +160,15 @@ class Person
 ```
 
 41 lines of getter/setter code were generated for us, and all we needed were a few annotations!
+
+## Bugs / Contributions
+
+Found a bug? Thanks! Please [create an issue](https://github.com/michaelmoussa/maam/issues/new) with as much
+information as possible, and I'll get it resolved as quickly as I can.
+
+Is my documentation terrible? [create an issue](https://github.com/michaelmoussa/maam/issues/new) for that too and
+tell me what you don't undersatnd, and I'll try to make it clearer.
+
+Added something cool and want to send a Pull Request? Feel free! Just be sure to include unit tests for whatever
+you add, and adhere to the [PSR2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+PHP coding standard.
