@@ -35,6 +35,7 @@ class Generator
      */
     public function generate($sourcePath)
     {
+        $generatedDir = __DIR__ . '/../../../../generated';
         $classMap = [];
         $objects = new RecursiveIteratorIterator(
             new RecursiveDirectoryIterator($sourcePath),
@@ -51,8 +52,12 @@ class Generator
             }
         }
 
+        if (!file_exists($generatedDir)) {
+            mkdir($generatedDir, 0777, true);
+        }
+
         file_put_contents(
-            __DIR__ . '/../../../../generated/classmap.php',
+            $generatedDir . '/classmap.php',
             "<?php\nreturn " . var_export($classMap, true) . ";"
         );
 
@@ -173,6 +178,10 @@ HEREDOC;
         $currentCode = file_get_contents($filePath);
         $newCode = "\n" . implode("\n\n", $newMethods);
         $targetFile = $generateTargetPath . '/' . $classRelativePath;
+
+        if (!file_exists($classFileTargetPath)) {
+            mkdir($classFileTargetPath, 0777, true);
+        }
 
         file_put_contents(
             $targetFile,

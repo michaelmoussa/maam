@@ -39,8 +39,14 @@ namespace Moose\Maam {
 
         protected function setUp()
         {
+            $generatedDir = __DIR__ . '/../../../generated';
+
+            if (!file_exists($generatedDir)) {
+                mkdir($generatedDir, 0777, true);
+            }
+
             file_put_contents(
-                __DIR__ . '/../../../generated/classmap.php',
+                $generatedDir . '/classmap.php',
                 "<?php\n" .
                 "return ['someclass' => 'somefile'];"
             );

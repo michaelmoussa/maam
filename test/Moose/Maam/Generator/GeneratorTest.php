@@ -2,6 +2,8 @@
 
 namespace Moose\Maam\Generator;
 
+use RecursiveDirectoryIterator;
+use RecursiveIteratorIterator;
 use Xpmock\TestCase;
 
 class GeneratorTest extends TestCase
@@ -38,12 +40,18 @@ class GeneratorTest extends TestCase
 
     protected function setUp()
     {
-        if (file_exists($this->getGenerationDir() . '/MaamTest/Person.php')) {
-            unlink($this->getGenerationDir() . '/MaamTest/Person.php');
+        $files = new RecursiveIteratorIterator(
+            new RecursiveDirectoryIterator($this->getGenerationDir(), RecursiveDirectoryIterator::SKIP_DOTS),
+            RecursiveIteratorIterator::CHILD_FIRST
+        );
+
+        /** @var $fileinfo \SplFileInfo */
+        foreach ($files as $fileinfo) {
+            $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
+            $todo($fileinfo->getRealPath());
         }
-        if (file_exists($this->getGenerationDir() . '/classmap.php')) {
-            unlink($this->getGenerationDir() . '/classmap.php');
-        }
+
+        rmdir($this->getGenerationDir());
     }
 
     protected function getGenerationDir()
