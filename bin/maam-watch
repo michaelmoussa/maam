@@ -1,0 +1,14 @@
+#!/bin/bash
+
+hash fswatch 2>/dev/null || {
+    echo >&2 "maam-watch requires the fswatch utility, but it is not installed." \
+             "See https://github.com/alandipert/fswatch for instructions on how to obtain it.";
+    exit 1;
+}
+
+if [ -z "$1" ]; then
+    echo 'You must specify the path to your source code'
+    exit 1
+fi
+
+fswatch -o -r "$1" | xargs -n1 -I{} ./maam.php "$1"
