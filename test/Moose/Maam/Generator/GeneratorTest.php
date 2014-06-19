@@ -40,8 +40,14 @@ class GeneratorTest extends TestCase
 
     protected function setUp()
     {
+        $generationDir = $this->getGenerationDir();
+
+        if (!file_exists($generationDir)) {
+            mkdir($generationDir, 0777, true);
+        }
+
         $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($this->getGenerationDir(), RecursiveDirectoryIterator::SKIP_DOTS),
+            new RecursiveDirectoryIterator($generationDir, RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
         );
 
