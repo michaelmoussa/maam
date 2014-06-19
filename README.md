@@ -16,28 +16,28 @@ work its magic!
 
 ## Usage
 
-### Bootstrapping
+### Initializing
 
 Including Maam in your project is extremely simple. When bootstrapping your application, just add these three lines:
 
 ```
 $loader = include __DIR__ . '/../vendor/autoload.php';
-$bootstrap = new \Moose\Maam\Bootstrap();
-$bootstrap->bootstrap($loader, '/path/to/src', \Moose\Maam\Bootstrap::MODE_DEVELOPMENT);
+$maam = new \Moose\Maam\Maam();
+$maam->init($loader, '/path/to/src', \Moose\Maam\Maam::MODE_DEVELOPMENT);
 ```
 
 First, we get an instance of Composer's `ClassLoader` by including the `vendor/autoload.php` script. Next, we create
-an instance of the Maam bootstrapper. Finally, we run the `->bootstrap(...)` method, which takes three parameters:
+an instance of the Maam initializer. Finally, we run the `->init(...)` method, which takes three parameters:
 
 1. The instance of Composer's `ClassLoader`.
 2. The path to your application's source code. Maam will scan these files for annotations indicating that you want
    getters and/or setters generated for properties.
-3. The run mode, which can be either `Bootstrap::MODE_DEVELOPMENT` or `Bootstrap::MODE_PRODUCTION`.
+3. The run mode, which can be either `Maam::MODE_DEVELOPMENT` or `Maam::MODE_PRODUCTION`.
 
 #### MODE_DEVELOPMENT
 
 This run mode tells Maam that it is running in a development environment where source files are likely to change
-often. As such, it will re-scan and re-generate your source files whenever the bootstrap script is run. This may
+often. As such, it will re-scan and re-generate your source files whenever the initializer is run. This may
 cause noticeable slowdown in your local development environment, depending on how many classes and Maam annotations
 you have.
 

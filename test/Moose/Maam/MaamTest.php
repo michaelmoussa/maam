@@ -4,15 +4,15 @@ namespace Moose\Maam {
 
     use Xpmock\TestCase;
 
-    class BootstrapTest extends TestCase
+    class MaamTest extends TestCase
     {
         public function testBootstrapperSkipsGenerationInProductionMode()
         {
             $loader = $this->mock('Composer\Autoload\ClassLoader')
                 ->addClassMap(['someclass' => 'somefile'])
                 ->new();
-            $bootstrap = new Bootstrap();
-            $bootstrap->bootstrap($loader, './source-path', Bootstrap::MODE_PRODUCTION);
+            $maam = new Maam();
+            $maam->init($loader, './source-path', Maam::MODE_PRODUCTION);
         }
 
         public function testBootstrapperGeneratesClassFilesInDevelopmentMode()
@@ -20,8 +20,8 @@ namespace Moose\Maam {
             $loader = $this->mock('Composer\Autoload\ClassLoader')
                 ->addClassMap(['someclass' => 'somefile'])
                 ->new();
-            $bootstrap = new Bootstrap();
-            $bootstrap->bootstrap($loader, './source-path', Bootstrap::MODE_DEVELOPMENT);
+            $maam = new Maam();
+            $maam->init($loader, './source-path', Maam::MODE_DEVELOPMENT);
         }
 
         /**
@@ -33,8 +33,8 @@ namespace Moose\Maam {
             $loader = $this->mock('Composer\Autoload\ClassLoader')
                 ->addClassMap($this->never())
                 ->new();
-            $bootstrap = new Bootstrap();
-            $bootstrap->bootstrap($loader, './this-one-should-fail', Bootstrap::MODE_DEVELOPMENT);
+            $maam = new Maam();
+            $maam->init($loader, './this-one-should-fail', Maam::MODE_DEVELOPMENT);
         }
 
         protected function setUp()

@@ -4,21 +4,22 @@ namespace Moose\Maam;
 
 use Composer\Autoload\ClassLoader;
 
-class Bootstrap
+class Maam
 {
     const MODE_DEVELOPMENT = 1;
     const MODE_PRODUCTION = 2;
 
     /**
-     * Bootstraps Maam by generating new class files for all PHP files in the supplied sourcePath
+     * Initializes Maam by generating new class files for all PHP files in the supplied sourcePath
      * and adds the new classmap to Composer's loader.
      *
      * @param ClassLoader $loader Composer's class loader.
      * @param string $sourcePath Path to application's PHP source files.
      * @param int $mode "dev" to generate class files, "production" to assume they are already there.
+     * @throws \RuntimeException
      * @return void
      */
-    public function bootstrap(ClassLoader $loader, $sourcePath, $mode = self::MODE_PRODUCTION)
+    public function init(ClassLoader $loader, $sourcePath, $mode = self::MODE_PRODUCTION)
     {
         if ($mode === self::MODE_DEVELOPMENT) {
             /*
