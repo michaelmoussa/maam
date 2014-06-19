@@ -2,7 +2,7 @@ imports:
     - php
 
 filter:
-    paths: [src/*, test/*]
+    paths: [src/*]
 
 build_failure_conditions:
     - 'issues.label("coding-style").exists'
