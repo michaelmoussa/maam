@@ -35,7 +35,7 @@ class Maam
 
             // Successful generation should result in $exitCode 0.
             if ($exitCode !== 0) {
-                throw new \RuntimeException("Maam compilation failed! Error output: " . implode("\n", $output));
+                throw new \RuntimeException("Maam compilation failed! Error output: " . implode("\n", (array) $output));
             }
         }
 
