@@ -6,7 +6,7 @@ namespace Moose\Maam {
 
     class MaamTest extends TestCase
     {
-        public function testBootstrapperSkipsGenerationInProductionMode()
+        public function testInitializerSkipsGenerationInProductionMode()
         {
             $loader = $this->mock('Composer\Autoload\ClassLoader')
                 ->addClassMap(['someclass' => 'somefile'])
@@ -15,7 +15,7 @@ namespace Moose\Maam {
             $maam->init($loader, './source-path', Maam::MODE_PRODUCTION);
         }
 
-        public function testBootstrapperGeneratesClassFilesInDevelopmentMode()
+        public function testInitializerGeneratesClassFilesInDevelopmentMode()
         {
             $loader = $this->mock('Composer\Autoload\ClassLoader')
                 ->addClassMap(['someclass' => 'somefile'])
