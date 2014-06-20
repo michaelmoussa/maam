@@ -23,24 +23,34 @@ class Person
     protected $dateOfBirth;
 
     /**
-     * Sets the firstName.
-     *
-     * @param mixed $firstName
-     * @return void
-     */
-    public function setFirstName($firstName)
-    {
-        $this->firstName = $firstName;
-    }
-
-    /**
-     * Gets the lastName.
+     * Gets the firstName.
      *
      * @return mixed
      */
-    public function getLastName()
+    public function getFirstName()
     {
-        return $this->lastName;
+        return $this->firstName;
+    }
+
+    /**
+     * Sets the lastName.
+     *
+     * @param mixed $lastName
+     * @return void
+     */
+    public function setLastName($lastName)
+    {
+        $this->lastName = $lastName;
+    }
+
+    /**
+     * Gets the dateOfBirth.
+     *
+     * @return mixed
+     */
+    public function getDateOfBirth()
+    {
+        return $this->dateOfBirth;
     }
 
     /**
@@ -52,15 +62,5 @@ class Person
     public function setDateOfBirth($dateOfBirth)
     {
         $this->dateOfBirth = $dateOfBirth;
-    }
-
-    /**
-     * Gets the dateOfBirth.
-     *
-     * @return mixed
-     */
-    public function getDateOfBirth()
-    {
-        return $this->dateOfBirth;
     }
 }
