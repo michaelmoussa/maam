@@ -8,22 +8,24 @@ use Xpmock\TestCase;
 
 class GeneratorTest extends TestCase
 {
+    protected static $generationPath;
+    protected static $assetDir;
+
     public function testGenerateGeneratesClassFilesForPhpFilesInTheSourcePath()
     {
-        $this->assertTrue(!file_exists($this->getGenerationDir() . '/MaamTest/Person.php'));
-        $this->assertTrue(!file_exists($this->getGenerationDir() . '/MaamTest/NoAnnotationsHere.php'));
-        $this->assertTrue(!file_exists($this->getGenerationDir() . '/classmap.php'));
+        $this->assertTrue(!file_exists(self::$generationPath . '/MaamTest/Person.php'));
+        $this->assertTrue(!file_exists(self::$generationPath . '/NoAnnotationsHere.php'));
+        $this->assertTrue(!file_exists(self::$generationPath . '/classmap.php'));
 
-        $assetDir = __DIR__ . '/../../../assets';
-        $generator = new Generator();
-        $generator->generate($assetDir);
+        $generator = new Generator(self::$assetDir, self::$generationPath);
+        $generator->generate();
 
         $this->assertSame(
-            file_get_contents($assetDir . '/Person.expected-output.txt'),
-            file_get_contents($this->getGenerationDir() . '/MaamTest/Person.php')
+            file_get_contents(self::$assetDir . '/Person.expected-output.txt'),
+            file_get_contents(self::$generationPath . '/MaamTest/Person.php')
         );
 
-        $classmap = include $this->getGenerationDir() . '/classmap.php';
+        $classmap = include self::$generationPath . '/classmap.php';
 
         $this->assertSame(1, count($classmap));
 
@@ -31,23 +33,32 @@ class GeneratorTest extends TestCase
 
         $this->assertSame('MaamTest\Person', $className);
         $this->assertSame(
-            realpath($this->getGenerationDir() . '/MaamTest/Person.php'),
+            realpath(self::$generationPath . '/MaamTest/Person.php'),
             realpath($classmap[$className])
         );
 
-        $this->assertTrue(!file_exists($this->getGenerationDir() . '/MaamTest/NoAnnotationsHere.php'));
+        $this->assertTrue(!file_exists(self::$generationPath . '/NoAnnotationsHere.php'));
     }
 
-    protected function setUp()
+    public static function setUpBeforeClass()
     {
-        $generationDir = $this->getGenerationDir();
+        self::$generationPath = __DIR__ . '/../../../data/maam';
+        self::$assetDir = __DIR__ . '/../../../assets';
 
-        if (!file_exists($generationDir)) {
-            mkdir($generationDir, 0777, true);
+        if (!file_exists(self::$generationPath)) {
+            mkdir(self::$generationPath, 0755, true);
         }
+    }
 
+    public static function tearDownAfterClass()
+    {
+        rmdir(self::$generationPath);
+    }
+
+    protected function tearDown()
+    {
         $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($generationDir, RecursiveDirectoryIterator::SKIP_DOTS),
+            new RecursiveDirectoryIterator(self::$generationPath, RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
         );
 
@@ -57,11 +68,8 @@ class GeneratorTest extends TestCase
             $todo($fileinfo->getRealPath());
         }
 
-        rmdir($this->getGenerationDir());
-    }
-
-    protected function getGenerationDir()
-    {
-        return __DIR__ . '/../../../../generated';
+        if (file_exists(self::$generationPath . '/classmap.php')) {
+            unlink(self::$generationPath . '/classmap.php');
+        }
     }
 }

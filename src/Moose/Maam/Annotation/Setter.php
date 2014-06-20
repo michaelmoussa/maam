@@ -9,4 +9,5 @@ use Doctrine\Common\Annotations\Annotation;
  */
 class Setter extends Annotation
 {
+    public $shortName = 'Setter';
 }

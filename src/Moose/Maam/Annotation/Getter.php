@@ -9,4 +9,5 @@ use Doctrine\Common\Annotations\Annotation;
  */
 class Getter extends Annotation
 {
+    public $shortName = 'Getter';
 }
