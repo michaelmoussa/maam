@@ -7,32 +7,63 @@
 
 Spare yourself the tedium of writing and testing countless getters and setters by generating them automagically!
 
+**Note:** Still in development. Use at your own risk, etc.
+
 ## Installation
 
 The only supported method of installation is [Composer](https://getcomposer.org/). In fact, Maam requires Composer to
 work its magic!
 
-`composer require "michaelmoussa/maam:~0.1"`
+`composer require "michaelmoussa/maam:dev-master"`
 
 ## Usage
 
 ### Initializing
 
-Including Maam in your project is extremely simple. When bootstrapping your application, just add these three lines:
+Including Maam in your project is extremely simple. When bootstrapping your application, just add these lines:
 
 ```
-$loader = include __DIR__ . '/../vendor/autoload.php';
-$maam = new \Moose\Maam\Maam();
-$maam->init($loader, '/path/to/src', \Moose\Maam\Maam::MODE_DEVELOPMENT);
+use Moose\Maam\Maam;
+
+$loader = include '/path/to/vendor/autoload.php'; # Change this according to your application
+$maam = new Maam(Maam::MODE_DEVELOPMENT);
+$maam->init($loader);
 ```
 
 First, we get an instance of Composer's `ClassLoader` by including the `vendor/autoload.php` script. Next, we create
-an instance of the Maam initializer. Finally, we run the `->init(...)` method, which takes three parameters:
+an instance of the Maam initializer. Finally, we run the `->init(...)` method.
 
-1. The instance of Composer's `ClassLoader`.
-2. The path to your application's source code. Maam will scan these files for annotations indicating that you want
-   getters and/or setters generated for properties.
-3. The run mode, which can be either `Maam::MODE_DEVELOPMENT` or `Maam::MODE_PRODUCTION`.
+Maam requires three other bits of information to work, they are:
+
+* The path to your application's source code.
+* The path to where you want Maam to write the code it generates.
+* The path to your Composer's autoload.php
+
+If you do not specify these paths, Maam will use sane defaults, which are:
+
+* Application source code: `<maam-directory>/../../../src`
+  * Assuming a normal Composer installation, this would be the `src` directory in your project root.
+* Generation path: `<maam-directory>/../../../data/maam`
+  * Assuming a normal Composer installation, this would be the `data/maam` directory in your project root.
+  * **Note: THIS DIRECTORY MUST EXIST AND BE WRITABLE!**
+* Composer's autoload.php: `<maam-directory>/../../autoload.php`
+  * Assuming a normal Composer installation, this would be the `autoload.php` two directories up from where Maam was installed.
+  
+Do those defaults not work for your application? No problem! Use the `setApplicationAutoloadPath()`, `setApplicationSourcePath()`, and/or `setGenerationPath()` methods before calling `->init()` to configure your own paths.
+
+### Run modes
+
+Maam has two modes - development and production. Production is the default, and you can override this by passing the mode to the constructor or by using the `->setMode()` method.
+
+It is recommended that you specify the mode when initializing Maam based on what environment your script is running in. For example, supposing you had an `APPLICATION_ENV` constant that told your application where it was running, you could do something like this:
+
+```
+if (APPLICATION_ENV === 'development') {
+    $maam = new Maam(Maam::MODE_DEVELOPMENT);
+} else {
+    $maam = new Maam(Maam::MODE_PRODUCTION);
+}
+```
 
 #### MODE_DEVELOPMENT
 
@@ -58,8 +89,7 @@ Maam will generate your source files and let you know what it is adding to the c
 ### Annotations
 
 Maam works by using Annotations, which are special comments that you can place in phpDoc blocks. Maam currently has
-two annotations - `@Getter` and `@Setter`, which indicate that you need a getter or setter generated. Let's consider
-this example file:
+three annotations - `@Getter`, `@Setter`, and `@Both`, which indicate that you need a getter, setter, or both a getter and setter generated. Let's consider this example file:
 
 ```
 <?php
@@ -82,8 +112,7 @@ class Person
     protected $lastName;
 
     /**
-     * @Maam\Getter
-     * @Maam\Setter
+     * @Maam\Both
      */
     protected $dateOfBirth;
 }
