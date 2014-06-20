@@ -6,48 +6,104 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use Xpmock\TestCase;
 
+/**
+ * Tests the Generator. All tests that invoke the ->generate() method must run in a separate process, as including the
+ * same class file twice will result in a PHP redeclaration error.
+ */
 class GeneratorTest extends TestCase
 {
+    protected static $generationPath;
+    protected static $assetDir;
+
+    /**
+     * @runInSeparateProcess
+     */
     public function testGenerateGeneratesClassFilesForPhpFilesInTheSourcePath()
     {
-        $this->assertTrue(!file_exists($this->getGenerationDir() . '/MaamTest/Person.php'));
-        $this->assertTrue(!file_exists($this->getGenerationDir() . '/MaamTest/NoAnnotationsHere.php'));
-        $this->assertTrue(!file_exists($this->getGenerationDir() . '/classmap.php'));
+        $this->assertTrue(!file_exists(self::$generationPath . '/MaamTest/Person.php'));
+        $this->assertTrue(!file_exists(self::$generationPath . '/classmap.php'));
 
-        $assetDir = __DIR__ . '/../../../assets';
-        $generator = new Generator();
-        $generator->generate($assetDir);
+        $generator = new Generator(self::$assetDir, self::$generationPath);
+        $classMap = $generator->generate();
 
         $this->assertSame(
-            file_get_contents($assetDir . '/Person.expected-output.txt'),
-            file_get_contents($this->getGenerationDir() . '/MaamTest/Person.php')
+            file_get_contents(self::$assetDir . '/MaamTest/Person.expected-output.txt'),
+            file_get_contents(self::$generationPath . '/MaamTest/Person.php')
         );
 
-        $classmap = include $this->getGenerationDir() . '/classmap.php';
-
-        $this->assertSame(1, count($classmap));
-
-        $className = array_keys($classmap)[0];
-
-        $this->assertSame('MaamTest\Person', $className);
         $this->assertSame(
-            realpath($this->getGenerationDir() . '/MaamTest/Person.php'),
-            realpath($classmap[$className])
+            "<?php\nreturn " . var_export($classMap, true) . ";",
+            file_get_contents(self::$generationPath . '/classmap.php')
         );
 
-        $this->assertTrue(!file_exists($this->getGenerationDir() . '/MaamTest/NoAnnotationsHere.php'));
+        $this->assertArrayHasKey('MaamTest\\Person', $classMap);
+        $this->assertSame(
+            realpath(self::$generationPath . '/MaamTest/Person.php'),
+            realpath($classMap['MaamTest\\Person'])
+        );
     }
 
-    protected function setUp()
+    /**
+     * @runInSeparateProcess
+     */
+    public function testDoesNothingForClassesWithNoMaamAnnotations()
     {
-        $generationDir = $this->getGenerationDir();
+        $this->assertTrue(!file_exists(self::$generationPath . '/NoAnnotationsHere.php'));
 
-        if (!file_exists($generationDir)) {
-            mkdir($generationDir, 0777, true);
+        $generator = new Generator(self::$assetDir, self::$generationPath);
+        $generator->generate();
+
+        $this->assertTrue(!file_exists(self::$generationPath . '/NoAnnotationsHere.php'));
+    }
+
+    /**
+     * @runInSeparateProcess
+     */
+    public function testPlaysNicelyWithDoctrineOrmEntityAnnotations()
+    {
+        $this->assertTrue(!file_exists(self::$generationPath . '/MaamTest/DoctrineOrmEntity.php'));
+
+        $generator = new Generator(self::$assetDir, self::$generationPath);
+        $classMap = $generator->generate();
+
+        $this->assertSame(
+            file_get_contents(self::$assetDir . '/MaamTest/DoctrineOrmEntity.expected-output.txt'),
+            file_get_contents(self::$generationPath . '/MaamTest/DoctrineOrmEntity.php')
+        );
+
+        $this->assertSame(
+            "<?php\nreturn " . var_export($classMap, true) . ";",
+            file_get_contents(self::$generationPath . '/classmap.php')
+        );
+
+        $this->assertArrayHasKey('MaamTest\\DoctrineOrmEntity', $classMap);
+        $this->assertSame(
+            realpath(self::$generationPath . '/MaamTest/DoctrineOrmEntity.php'),
+            realpath($classMap['MaamTest\\DoctrineOrmEntity'])
+        );
+    }
+
+    public static function setUpBeforeClass()
+    {
+        self::$generationPath = __DIR__ . '/../../../data/maam';
+        self::$assetDir = __DIR__ . '/../../../assets';
+
+        if (!file_exists(self::$generationPath)) {
+            mkdir(self::$generationPath, 0755, true);
         }
+    }
 
+    public static function tearDownAfterClass()
+    {
+        if (file_exists(self::$generationPath)) {
+            rmdir(self::$generationPath);
+        }
+    }
+
+    protected function tearDown()
+    {
         $files = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($generationDir, RecursiveDirectoryIterator::SKIP_DOTS),
+            new RecursiveDirectoryIterator(self::$generationPath, RecursiveDirectoryIterator::SKIP_DOTS),
             RecursiveIteratorIterator::CHILD_FIRST
         );
 
@@ -57,11 +113,8 @@ class GeneratorTest extends TestCase
             $todo($fileinfo->getRealPath());
         }
 
-        rmdir($this->getGenerationDir());
-    }
-
-    protected function getGenerationDir()
-    {
-        return __DIR__ . '/../../../../generated';
+        if (file_exists(self::$generationPath . '/classmap.php')) {
+            unlink(self::$generationPath . '/classmap.php');
+        }
     }
 }

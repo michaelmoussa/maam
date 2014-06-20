@@ -13,4 +13,10 @@ class GetterTest extends TestCase
         $reflectionClass = new \ReflectionClass('Moose\Maam\Annotation\Getter');
         $this->assertContains('@Annotation', $reflectionClass->getDocComment());
     }
+
+    public function testHasCorrectShortName()
+    {
+        $getter = $this->mock('Moose\Maam\Annotation\Getter')->new();
+        $this->assertSame('Getter', $getter->getShortName());
+    }
 }

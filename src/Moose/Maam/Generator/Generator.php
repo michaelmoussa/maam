@@ -6,6 +6,7 @@ namespace Moose\Maam\Generator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Moose\Maam\Annotation\MaamAnnotationInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
@@ -17,33 +18,41 @@ use SplFileInfo;
 class Generator
 {
     /**
-     * Constructor
+     * Path where files should be written.
+     *
+     * @var string
      */
-    public function __construct()
+    protected $generationPath;
+
+    /**
+     * Path to application source files.
+     *
+     * @var string
+     */
+    protected $sourcePath;
+
+    public function __construct($sourcePath, $generationPath)
     {
-        AnnotationRegistry::registerAutoloadNamespace(
-            'Moose\Maam\Annotation',
-            [__DIR__ . '/../../../']
+        AnnotationRegistry::registerLoader(
+            function ($className) {
+                return class_exists($className);
+            }
         );
+
+        $this->sourcePath = $sourcePath;
+        $this->generationPath = $generationPath;
     }
 
     /**
-     * Recursively checks the source path for files to generate, then generates them.
+     * Recursively checks the source path for files to generate, then generates them to the generation path.
      *
-     * @param string $sourcePath Path to the application source files containing the Maam annotations.
      * @return array The Composer classmap that was written.
      */
-    public function generate($sourcePath)
+    public function generate()
     {
-        $generatedDir = __DIR__ . '/../../../../generated';
-
-        if (!file_exists($generatedDir)) {
-            mkdir($generatedDir, 0777, true);
-        }
-
         $classMap = [];
         $objects = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($sourcePath),
+            new RecursiveDirectoryIterator($this->sourcePath),
             RecursiveIteratorIterator::SELF_FIRST
         );
 
@@ -58,7 +67,7 @@ class Generator
         }
 
         file_put_contents(
-            $generatedDir . '/classmap.php',
+            $this->generationPath . '/classmap.php',
             "<?php\nreturn " . var_export($classMap, true) . ";"
         );
 
@@ -79,6 +88,7 @@ class Generator
         $reflectionClass = $this->getReflectionClass($filePath);
         $annotationReader = new AnnotationReader();
 
+        /** @var \ReflectionProperty $property */
         foreach ($reflectionClass->getProperties() as $property) {
             $annotations = $annotationReader->getPropertyAnnotations($property);
 
@@ -88,10 +98,10 @@ class Generator
 
             /** @var \Doctrine\Common\Annotations\Annotation $annotation */
             foreach ($annotations as $annotation) {
-                $annotationShortName = basename(strtr(get_class($annotation), "\\", "/"));
-                $generationMethodName = 'generate' . $annotationShortName;
-                $propertyName = $property->getName();
-                $newMethods[] = call_user_func([$this, $generationMethodName], $propertyName);
+                if ($annotation instanceof MaamAnnotationInterface) {
+                    $generationMethodName = 'generate' . $annotation->getShortName();
+                    $newMethods[] = call_user_func([$this, $generationMethodName], $property->getName());
+                }
             }
         }
 
@@ -127,14 +137,13 @@ class Generator
 
         return <<<HEREDOC
     /**
-     * Sets the ${propertyName}.
+     * Gets the ${propertyName}.
      *
-     * @param mixed \$${propertyName}
-     * @return void
+     * @return mixed
      */
-    public function set${methodSuffix}(\$${propertyName})
+    public function get${methodSuffix}()
     {
-        \$this->${propertyName} = \$${propertyName};
+        return \$this->${propertyName};
     }
 HEREDOC;
     }
@@ -151,13 +160,14 @@ HEREDOC;
 
         return <<<HEREDOC
     /**
-     * Gets the ${propertyName}.
+     * Sets the ${propertyName}.
      *
-     * @return mixed
+     * @param mixed \$${propertyName}
+     * @return void
      */
-    public function get${methodSuffix}()
+    public function set${methodSuffix}(\$${propertyName})
     {
-        return \$this->${propertyName};
+        \$this->${propertyName} = \$${propertyName};
     }
 HEREDOC;
     }
@@ -172,16 +182,13 @@ HEREDOC;
      */
     protected function writeNewCode($filePath, $className, array $newMethods)
     {
-        $generateTargetPath = __DIR__ . '/../../../../generated';
-        $classRelativePath = strtr($className, '\\', '/') . '.php';
-        $classFileTargetPath = $generateTargetPath . '/' . dirname($classRelativePath);
-
         $currentCode = file_get_contents($filePath);
         $newCode = "\n" . implode("\n\n", $newMethods);
-        $targetFile = $generateTargetPath . '/' . $classRelativePath;
+        $targetFile = str_replace($this->sourcePath, $this->generationPath, $filePath);
+        $targetFileDir = dirname($targetFile);
 
-        if (!file_exists($classFileTargetPath)) {
-            mkdir($classFileTargetPath, 0777, true);
+        if (!file_exists($targetFileDir)) {
+            mkdir($targetFileDir, 0755, true);
         }
 
         file_put_contents(
