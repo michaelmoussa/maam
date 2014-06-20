@@ -82,11 +82,13 @@ This is the run mode you should be using when your application is deployed to yo
 Maam to expect that you have *already* generated the new source files. Of course, if you haven't already done so,
 your application will encounter an error and/or behave unpredictably when it is run.
 
-Generating the new source files manually is easy.
+~~Generating the new source files manually is easy.~~
 
-`/path/to/vendor/bin/maam.php /path/to/src`
+~~`/path/to/vendor/bin/maam.php /path/to/src`~~
 
-Maam will generate your source files and let you know what it is adding to the classmap.
+~~Maam will generate your source files and let you know what it is adding to the classmap.~~
+
+This was easy, but isn't anymore. :) It will be fixed. See #12 for status of this.
 
 ### Annotations
 
