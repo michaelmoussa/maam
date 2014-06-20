@@ -124,7 +124,7 @@ class Generator
      */
     protected function getReflectionClass($filePath)
     {
-        include($filePath);
+        require_once $filePath;
         $classes = get_declared_classes();
         return new ReflectionClass(end($classes));
     }
