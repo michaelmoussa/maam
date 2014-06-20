@@ -7,7 +7,15 @@ use Doctrine\Common\Annotations\Annotation;
 /**
  * @Annotation
  */
-class Setter extends Annotation
+class Setter extends Annotation implements MaamAnnotationInterface
 {
-    public $shortName = 'Setter';
+    /**
+     * {@inheritDoc}
+     *
+     * @return string
+     */
+    public function getShortName()
+    {
+        return 'Setter';
+    }
 }

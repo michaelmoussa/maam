@@ -17,6 +17,6 @@ class SetterTest extends TestCase
     public function testHasCorrectShortName()
     {
         $setter = $this->mock('Moose\Maam\Annotation\Setter')->new();
-        $this->assertSame('Setter', $setter->shortName);
+        $this->assertSame('Setter', $setter->getShortName());
     }
 }

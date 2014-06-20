@@ -17,6 +17,6 @@ class GetterTest extends TestCase
     public function testHasCorrectShortName()
     {
         $getter = $this->mock('Moose\Maam\Annotation\Getter')->new();
-        $this->assertSame('Getter', $getter->shortName);
+        $this->assertSame('Getter', $getter->getShortName());
     }
 }

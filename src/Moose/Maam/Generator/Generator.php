@@ -6,6 +6,7 @@ namespace Moose\Maam\Generator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Moose\Maam\Annotation\MaamAnnotationInterface;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use ReflectionClass;
@@ -96,8 +97,10 @@ class Generator
 
             /** @var \Doctrine\Common\Annotations\Annotation $annotation */
             foreach ($annotations as $annotation) {
-                $generationMethodName = 'generate' . $annotation->shortName;
-                $newMethods[] = call_user_func([$this, $generationMethodName], $property->getName());
+                if ($annotation instanceof MaamAnnotationInterface) {
+                    $generationMethodName = 'generate' . $annotation->getShortName();
+                    $newMethods[] = call_user_func([$this, $generationMethodName], $property->getName());
+                }
             }
         }
 
