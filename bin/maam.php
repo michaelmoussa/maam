@@ -3,17 +3,11 @@
 
 use Moose\Maam\Generator\Generator;
 
-include __DIR__ . '/../vendor/autoload.php';
-
-if (!isset($argv[1])) {
-    die("Missing source path!\n");
-} elseif (!is_dir($argv[1])) {
-    die("The provided source path was not found\n");
-}
+require $argv[1];
 
 $classMap = [];
-$generator = new Generator();
-$classMap = $generator->generate($argv[1]);
+$generator = new Generator($argv[2], $argv[3]);
+$classMap = $generator->generate();
 
 echo "Rebuilt classmap:\n";
 var_dump($classMap);
