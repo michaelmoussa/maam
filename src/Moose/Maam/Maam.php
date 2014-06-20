@@ -18,6 +18,13 @@ class Maam
     protected $applicationAutoloadPath;
 
     /**
+     * Path to the application's source code.
+     *
+     * @var string
+     */
+    protected $applicationSourcePath;
+
+    /**
      * Path to where Maam processed files should be written
      *
      * @var string
