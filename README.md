@@ -1,4 +1,5 @@
 [![Build Status](https://travis-ci.org/michaelmoussa/maam.svg?branch=master)](https://travis-ci.org/michaelmoussa/maam)
+[![Code Climate](https://codeclimate.com/github/michaelmoussa/maam.png)](https://codeclimate.com/github/michaelmoussa/maam)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaelmoussa/maam/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaelmoussa/maam/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/michaelmoussa/maam/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/michaelmoussa/maam/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/michaelmoussa/maam/v/stable.png)](https://packagist.org/packages/michaelmoussa/maam)
