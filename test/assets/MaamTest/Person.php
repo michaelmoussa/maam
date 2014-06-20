@@ -12,6 +12,11 @@ class Person
     protected $firstName;
 
     /**
+     * @Maam\Both
+     */
+    protected $middleInitial;
+
+    /**
      * @Maam\Setter
      */
     protected $lastName;

@@ -177,6 +177,17 @@ HEREDOC;
     }
 
     /**
+     * Writes both the getter and the setter.
+     *
+     * @param string $propertyName The name of the property
+     * @return string
+     */
+    protected function generateBoth($propertyName)
+    {
+        return $this->generateGetter($propertyName) . "\n\n" . $this->generateSetter($propertyName);
+    }
+
+    /**
      * Combines all of the new methods and writes a new classfile with the getters and setters present.
      *
      * @param string $filePath Target file

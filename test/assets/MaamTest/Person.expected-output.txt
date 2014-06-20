@@ -12,6 +12,11 @@ class Person
     protected $firstName;
 
     /**
+     * @Maam\Both
+     */
+    protected $middleInitial;
+
+    /**
      * @Maam\Setter
      */
     protected $lastName;
@@ -30,6 +35,27 @@ class Person
     public function getFirstName()
     {
         return $this->firstName;
+    }
+
+    /**
+     * Gets the middleInitial.
+     *
+     * @return mixed
+     */
+    public function getMiddleInitial()
+    {
+        return $this->middleInitial;
+    }
+
+    /**
+     * Sets the middleInitial.
+     *
+     * @param mixed $middleInitial
+     * @return void
+     */
+    public function setMiddleInitial($middleInitial)
+    {
+        $this->middleInitial = $middleInitial;
     }
 
     /**
