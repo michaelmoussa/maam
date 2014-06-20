@@ -83,6 +83,21 @@ class GeneratorTest extends TestCase
         );
     }
 
+    /**
+     * @runInSeparateProcess
+     */
+    public function testWontGenerateFileIfItContainsOnlyNonMaamAnnotations()
+    {
+        $this->assertTrue(!file_exists(self::$generationPath . '/MaamTest/NonMaamAnnotations.php'));
+
+        $generator = new Generator(self::$assetDir, self::$generationPath);
+        $classMap = $generator->generate();
+
+        $this->assertTrue(!file_exists(self::$generationPath . '/MaamTest/NonMaamAnnotations.php'));
+
+        $this->assertArrayNotHasKey('MaamTest\\NonMaamAnnotations', $classMap);
+    }
+
     public static function setUpBeforeClass()
     {
         self::$generationPath = __DIR__ . '/../../../data/maam';

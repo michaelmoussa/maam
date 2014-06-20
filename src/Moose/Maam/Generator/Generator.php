@@ -94,6 +94,10 @@ class Generator
             $newMethods = array_merge($newMethods, $this->generateMethods($annotations, $property->getName()));
         }
 
+        if (count($newMethods) === 0) {
+            return null;
+        }
+
         return [
             'class' => $reflectionClass->getName(),
             'path' => $this->writeNewCode($filePath, $newMethods)
