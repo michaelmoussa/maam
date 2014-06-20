@@ -107,7 +107,7 @@ class Generator
 
         return [
             'class' => $reflectionClass->getName(),
-            'path' => $this->writeNewCode($filePath, $reflectionClass->getName(), $newMethods)
+            'path' => $this->writeNewCode($filePath, $newMethods)
         ];
     }
 
@@ -176,11 +176,10 @@ HEREDOC;
      * Combines all of the new methods and writes a new classfile with the getters and setters present.
      *
      * @param string $filePath Target file
-     * @param string $className FQCN of the class being Maam'ed
      * @param array $newMethods Code for the new methods
      * @return string
      */
-    protected function writeNewCode($filePath, $className, array $newMethods)
+    protected function writeNewCode($filePath, array $newMethods)
     {
         $currentCode = file_get_contents($filePath);
         $newCode = "\n" . implode("\n\n", $newMethods);
