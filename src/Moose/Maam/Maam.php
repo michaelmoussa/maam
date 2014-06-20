@@ -147,14 +147,14 @@ class Maam
 
     /**
      * Returns the path to where processed classes should be written. If not previously set, defaults to
-     * the "data/maam" directory 3 levels up from the module root.
+     * the "cache/maam" directory 3 levels up from the module root.
      *
      * @return string
      */
     public function getGenerationPath()
     {
         if (empty($this->generationPath)) {
-            $this->setGenerationPath($this->moduleRoot . '/../../../data/maam');
+            $this->setGenerationPath($this->moduleRoot . '/../../../cache/maam');
         }
         return $this->generationPath;
     }

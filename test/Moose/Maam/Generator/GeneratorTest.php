@@ -100,7 +100,7 @@ class GeneratorTest extends TestCase
 
     public static function setUpBeforeClass()
     {
-        self::$generationPath = __DIR__ . '/../../../data/maam';
+        self::$generationPath = __DIR__ . '/../../../cache/maam';
         self::$assetDir = __DIR__ . '/../../../assets';
 
         if (!file_exists(self::$generationPath)) {

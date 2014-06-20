@@ -44,9 +44,10 @@ If you do not specify these paths, Maam will use sane defaults, which are:
 
 * Application source code: `<maam-directory>/../../../src`
   * Assuming a normal Composer installation, this would be the `src` directory in your project root.
-* Generation path: `<maam-directory>/../../../data/maam`
-  * Assuming a normal Composer installation, this would be the `data/maam` directory in your project root.
-  * **Note: THIS DIRECTORY MUST EXIST AND BE WRITABLE!**
+* Generation path: `<maam-directory>/../../../cache/maam`
+  * Assuming a normal Composer installation, this would be the `cache/maam` directory in your project root.
+  * **Note:** THIS DIRECTORY MUST EXIST AND BE WRITABLE!
+  * **Note:** `cache/maam/*` (or whatever you specify) should be in your `.gitignore`.
 * Composer's autoload.php: `<maam-directory>/../../autoload.php`
   * Assuming a normal Composer installation, this would be the `autoload.php` two directories up from where Maam was installed.
   

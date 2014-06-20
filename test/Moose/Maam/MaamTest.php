@@ -105,12 +105,12 @@ namespace Moose\Maam {
         public function testGetApplicationSourcePathDefaultsToDataMaamDirInApplicationRoot()
         {
             $maam = new Maam();
-            $this->assertSame(realpath(__DIR__ . '/../../../../../../data/maam'), $maam->getGenerationPath());
+            $this->assertSame(realpath(__DIR__ . '/../../../../../../cache/maam'), $maam->getGenerationPath());
         }
 
         public static function setUpBeforeClass()
         {
-            self::$generationPath = realpath(__DIR__ . '/../../../data/maam');
+            self::$generationPath = realpath(__DIR__ . '/../../../cache/maam');
             if (!\file_exists(self::$generationPath)) {
                 mkdir(self::$generationPath, 0755, true);
             }
