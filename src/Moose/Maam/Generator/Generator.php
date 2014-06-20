@@ -96,19 +96,28 @@ class Generator
                 return null;
             }
 
-            /** @var \Doctrine\Common\Annotations\Annotation $annotation */
-            foreach ($annotations as $annotation) {
-                if ($annotation instanceof MaamAnnotationInterface) {
-                    $generationMethodName = 'generate' . $annotation->getShortName();
-                    $newMethods[] = call_user_func([$this, $generationMethodName], $property->getName());
-                }
-            }
+            $newMethods = array_merge($newMethods, $this->generateMethods($annotations, $property->getName()));
         }
 
         return [
             'class' => $reflectionClass->getName(),
             'path' => $this->writeNewCode($filePath, $newMethods)
         ];
+    }
+
+    protected function generateMethods($annotations, $propertyName)
+    {
+        $methods = [];
+
+        /** @var \Doctrine\Common\Annotations\Annotation $annotation */
+        foreach ($annotations as $annotation) {
+            if ($annotation instanceof MaamAnnotationInterface) {
+                $generationMethodName = 'generate' . $annotation->getShortName();
+                $methods[] = call_user_func([$this, $generationMethodName], $propertyName);
+            }
+        }
+
+        return $methods;
     }
 
     /**
