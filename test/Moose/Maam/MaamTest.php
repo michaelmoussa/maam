@@ -111,7 +111,7 @@ namespace Moose\Maam {
         public static function setUpBeforeClass()
         {
             self::$generationPath = realpath(__DIR__ . '/../../../data/maam');
-            if (!file_exists(self::$generationPath)) {
+            if (!\file_exists(self::$generationPath)) {
                 mkdir(self::$generationPath, 0755, true);
             }
 
@@ -168,22 +168,18 @@ namespace Moose\Maam {
         }
     }
 
+    function file_exists($path)
+    {
+        return strpos($path, 'invalid') !== 0;
+    }
     function is_dir($path)
     {
-        if ($path === 'this-should-fail' || $path === 'valid-but-not-writable') {
-            return true;
-        }
-
-        return \is_dir($path);
+        return strpos($path, 'invalid') !== 0;
     }
 
     function is_writable($path)
     {
-        if ($path === 'valid-but-not-writable') {
-            return false;
-        }
-
-        return \is_writable($path);
+        return strpos($path, 'valid-but-not-writable') !== 0;
     }
 
     function realpath($path)
