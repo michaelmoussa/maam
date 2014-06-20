@@ -56,6 +56,33 @@ class GeneratorTest extends TestCase
         $this->assertTrue(!file_exists(self::$generationPath . '/NoAnnotationsHere.php'));
     }
 
+    /**
+     * @runInSeparateProcess
+     */
+    public function testPlaysNicelyWithDoctrineOrmEntityAnnotations()
+    {
+        $this->assertTrue(!file_exists(self::$generationPath . '/MaamTest/DoctrineOrmEntity.php'));
+
+        $generator = new Generator(self::$assetDir, self::$generationPath);
+        $classMap = $generator->generate();
+
+        $this->assertSame(
+            file_get_contents(self::$assetDir . '/MaamTest/DoctrineOrmEntity.expected-output.txt'),
+            file_get_contents(self::$generationPath . '/MaamTest/DoctrineOrmEntity.php')
+        );
+
+        $this->assertSame(
+            "<?php\nreturn " . var_export($classMap, true) . ";",
+            file_get_contents(self::$generationPath . '/classmap.php')
+        );
+
+        $this->assertArrayHasKey('MaamTest\\DoctrineOrmEntity', $classMap);
+        $this->assertSame(
+            realpath(self::$generationPath . '/MaamTest/DoctrineOrmEntity.php'),
+            realpath($classMap['MaamTest\\DoctrineOrmEntity'])
+        );
+    }
+
     public static function setUpBeforeClass()
     {
         self::$generationPath = __DIR__ . '/../../../data/maam';

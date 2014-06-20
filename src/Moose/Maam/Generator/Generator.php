@@ -33,9 +33,10 @@ class Generator
 
     public function __construct($sourcePath, $generationPath)
     {
-        AnnotationRegistry::registerAutoloadNamespace(
-            'Moose\Maam\Annotation',
-            [realpath(__DIR__ . '/../../../')]
+        AnnotationRegistry::registerLoader(
+            function ($className) {
+                return class_exists($className);
+            }
         );
 
         $this->sourcePath = $sourcePath;
