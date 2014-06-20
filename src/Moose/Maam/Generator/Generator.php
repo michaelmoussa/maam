@@ -7,10 +7,9 @@ namespace Moose\Maam\Generator;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Moose\Maam\Annotation\MaamAnnotationInterface;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
 use ReflectionClass;
 use SplFileInfo;
+use Symfony\Component\Finder\Finder;
 
 /**
  * Generator for Maam'ed files
@@ -51,18 +50,14 @@ class Generator
     public function generate()
     {
         $classMap = [];
-        $objects = new RecursiveIteratorIterator(
-            new RecursiveDirectoryIterator($this->sourcePath),
-            RecursiveIteratorIterator::SELF_FIRST
-        );
+        $finder = new Finder();
+        $finder->in($this->sourcePath)->files()->name('*.php');
 
         /** @var SplFileInfo $object */
-        foreach ($objects as $object) {
-            if ($object->isFile() && $object->getExtension() === 'php') {
-                $result = $this->generateClass($object->getPathname());
-                if (!empty($result)) {
-                    $classMap[$result['class']] = $result['path'];
-                }
+        foreach ($finder as $file) {
+            $result = $this->generateClass($file->getPathname());
+            if (!empty($result)) {
+                $classMap[$result['class']] = $result['path'];
             }
         }
 
