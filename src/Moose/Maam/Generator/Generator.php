@@ -133,14 +133,13 @@ class Generator
 
         return <<<HEREDOC
     /**
-     * Sets the ${propertyName}.
+     * Gets the ${propertyName}.
      *
-     * @param mixed \$${propertyName}
-     * @return void
+     * @return mixed
      */
-    public function set${methodSuffix}(\$${propertyName})
+    public function get${methodSuffix}()
     {
-        \$this->${propertyName} = \$${propertyName};
+        return \$this->${propertyName};
     }
 HEREDOC;
     }
@@ -157,13 +156,14 @@ HEREDOC;
 
         return <<<HEREDOC
     /**
-     * Gets the ${propertyName}.
+     * Sets the ${propertyName}.
      *
-     * @return mixed
+     * @param mixed \$${propertyName}
+     * @return void
      */
-    public function get${methodSuffix}()
+    public function set${methodSuffix}(\$${propertyName})
     {
-        return \$this->${propertyName};
+        \$this->${propertyName} = \$${propertyName};
     }
 HEREDOC;
     }
