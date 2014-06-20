@@ -62,26 +62,7 @@ class Maam
     public function init(ClassLoader $loader)
     {
         if ($this->getMode() === self::MODE_DEVELOPMENT) {
-            /*
-             * Runs the Maam compiler. Needs to be run as a separate PHP process so that its loading
-             * of the original PHP classes as part of generation do not interfere with injection of
-             * the generated classes' classMap into Composer.
-             */
-            $command = sprintf(
-                '%s "%s" "%s" "%s" "%s"',
-                PHP_BINARY,
-                realpath($this->moduleRoot . '/bin/maam.php'),
-                realpath($this->getApplicationAutoloadPath()),
-                realpath($this->getApplicationSourcePath()),
-                realpath($this->getGenerationPath())
-            );
-
-            exec($command, $output, $exitCode);
-
-            // Successful generation should result in $exitCode 0.
-            if ($exitCode !== 0) {
-                throw new RuntimeException('Maam compilation failed! Error output: ' . implode("\n", (array) $output));
-            }
+            $this->runGeneratorCommand();
         }
 
         $loader->addClassMap(require $this->getGenerationPath() . '/classmap.php');
@@ -201,5 +182,35 @@ class Maam
     public function getMode()
     {
         return $this->mode;
+    }
+
+    /**
+     * Prepares the shell command that is used to generate classes based on Maam annotations and runs it.
+     *
+     * @throws RuntimeException
+     * @return void
+     **/
+    protected function runGeneratorCommand()
+    {
+        /*
+         * Runs the Maam compiler. Needs to be run as a separate PHP process so that its loading
+         * of the original PHP classes as part of generation do not interfere with injection of
+         * the generated classes' classMap into Composer.
+         */
+        $command = sprintf(
+            '%s "%s" "%s" "%s" "%s"',
+            PHP_BINARY,
+            realpath($this->moduleRoot . '/bin/maam.php'),
+            realpath($this->getApplicationAutoloadPath()),
+            realpath($this->getApplicationSourcePath()),
+            realpath($this->getGenerationPath())
+        );
+
+        exec($command, $output, $exitCode);
+
+        // Successful generation should result in $exitCode 0.
+        if ($exitCode !== 0) {
+            throw new RuntimeException('Maam compilation failed! Error output: ' . implode("\n", (array) $output));
+        }
     }
 }
