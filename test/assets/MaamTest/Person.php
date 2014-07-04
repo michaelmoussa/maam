@@ -22,6 +22,16 @@ class Person
     protected $lastName;
 
     /**
+     * @Maam\Isser
+     */
+    protected $alive;
+
+    /**
+     * @Maam\Direct
+     */
+    protected $direct;
+
+    /**
      * @Maam\Getter
      * @Maam\Setter
      */

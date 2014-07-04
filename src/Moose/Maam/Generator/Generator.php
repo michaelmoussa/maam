@@ -134,6 +134,50 @@ class Generator
     }
 
     /**
+     * Writes the isser.
+     *
+     * @param string $propertyName The name of the property
+     * @return string
+     */
+    protected function generateDirect($propertyName)
+    {
+        return <<<HEREDOC
+    /**
+     * Gets the ${propertyName}.
+     *
+     * @return bool
+     */
+    public function {$propertyName}()
+    {
+        return \$this->${propertyName};
+    }
+HEREDOC;
+    }
+
+    /**
+     * Writes the isser.
+     *
+     * @param string $propertyName The name of the property
+     * @return string
+     */
+    protected function generateIsser($propertyName)
+    {
+        $methodSuffix = ucfirst($propertyName);
+
+        return <<<HEREDOC
+    /**
+     * Gets the ${propertyName}.
+     *
+     * @return bool
+     */
+    public function is${methodSuffix}()
+    {
+        return \$this->${propertyName};
+    }
+HEREDOC;
+    }
+
+    /**
      * Writes the getter.
      *
      * @param string $propertyName The name of the property

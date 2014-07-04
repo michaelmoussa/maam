@@ -22,6 +22,16 @@ class Person
     protected $lastName;
 
     /**
+     * @Maam\Isser
+     */
+    protected $alive;
+
+    /**
+     * @Maam\Direct
+     */
+    protected $direct;
+
+    /**
      * @Maam\Getter
      * @Maam\Setter
      */
@@ -67,6 +77,26 @@ class Person
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+    }
+
+    /**
+     * Gets the alive.
+     *
+     * @return bool
+     */
+    public function isAlive()
+    {
+        return $this->alive;
+    }
+
+    /**
+     * Gets the direct.
+     *
+     * @return bool
+     */
+    public function direct()
+    {
+        return $this->direct;
     }
 
     /**
