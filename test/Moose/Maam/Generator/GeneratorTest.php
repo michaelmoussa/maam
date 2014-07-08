@@ -4,13 +4,12 @@ namespace Moose\Maam\Generator;
 
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
-use Xpmock\TestCase;
 
 /**
  * Tests the Generator. All tests that invoke the ->generate() method must run in a separate process, as including the
  * same class file twice will result in a PHP redeclaration error.
  */
-class GeneratorTest extends TestCase
+class GeneratorTest extends \PHPUnit_Framework_TestCase
 {
     protected static $generationPath;
     protected static $assetDir;
@@ -20,8 +19,8 @@ class GeneratorTest extends TestCase
      */
     public function testGenerateGeneratesClassFilesForPhpFilesInTheSourcePath()
     {
-        $this->assertTrue(!file_exists(self::$generationPath . '/MaamTest/Person.php'));
-        $this->assertTrue(!file_exists(self::$generationPath . '/classmap.php'));
+        @unlink(self::$generationPath . '/MaamTest/Person.php');
+        @unlink(self::$generationPath . '/classmap.php');
 
         $generator = new Generator(self::$assetDir, self::$generationPath);
         $classMap = $generator->generate();

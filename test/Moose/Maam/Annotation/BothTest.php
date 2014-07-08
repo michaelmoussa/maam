@@ -2,9 +2,7 @@
 
 namespace Moose\Maam\Annotation;
 
-use Xpmock\TestCase;
-
-class BothTest extends TestCase
+class BothTest extends \PHPUnit_Framework_TestCase
 {
     public function testBothAnnotationExistsAndIsValid()
     {
@@ -16,7 +14,7 @@ class BothTest extends TestCase
 
     public function testHasCorrectShortName()
     {
-        $both = $this->mock('Moose\Maam\Annotation\Both')->new();
+        $both = new Both([]);
         $this->assertSame('Both', $both->getShortName());
     }
 }

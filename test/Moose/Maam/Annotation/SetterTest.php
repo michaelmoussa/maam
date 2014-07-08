@@ -2,9 +2,7 @@
 
 namespace Moose\Maam\Annotation;
 
-use Xpmock\TestCase;
-
-class SetterTest extends TestCase
+class SetterTest extends \PHPUnit_Framework_TestCase
 {
     public function testSetterAnnotationExistsAndIsValid()
     {
@@ -16,7 +14,7 @@ class SetterTest extends TestCase
 
     public function testHasCorrectShortName()
     {
-        $setter = $this->mock('Moose\Maam\Annotation\Setter')->new();
+        $setter = new Setter([]);
         $this->assertSame('Setter', $setter->getShortName());
     }
 }

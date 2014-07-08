@@ -1,5 +1,5 @@
 .idea/
 build/
-generated/
+test/cache
 vendor/
 composer.lock

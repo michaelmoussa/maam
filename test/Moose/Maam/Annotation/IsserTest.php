@@ -2,9 +2,7 @@
 
 namespace Moose\Maam\Annotation;
 
-use Xpmock\TestCase;
-
-class IsserTest extends TestCase
+class IsserTest extends \PHPUnit_Framework_TestCase
 {
     public function testIsserAnnotationExistsAndIsValid()
     {
@@ -16,7 +14,7 @@ class IsserTest extends TestCase
 
     public function testHasCorrectShortName()
     {
-        $isser = $this->mock('Moose\Maam\Annotation\Isser')->new();
+        $isser = new Isser([]);
         $this->assertSame('Isser', $isser->getShortName());
     }
 }

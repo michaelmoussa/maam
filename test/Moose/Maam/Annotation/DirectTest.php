@@ -2,9 +2,7 @@
 
 namespace Moose\Maam\Annotation;
 
-use Xpmock\TestCase;
-
-class DirectTest extends TestCase
+class DirectTest extends \PHPUnit_Framework_TestCase
 {
     public function testDirectAnnotationExistsAndIsValid()
     {
@@ -16,7 +14,7 @@ class DirectTest extends TestCase
 
     public function testHasCorrectShortName()
     {
-        $direct = $this->mock('Moose\Maam\Annotation\Direct')->new();
+        $direct = new Direct([]);
         $this->assertSame('Direct', $direct->getShortName());
     }
 }
