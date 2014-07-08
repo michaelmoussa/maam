@@ -19,6 +19,7 @@ before_script:
 
 script:
     - vendor/bin/phpunit -c test/phpunit.xml
+    - php .travis/coverage-checker.php build/coverage-clover.xml 100
     - vendor/bin/phpdoc -c phpdoc.xml --force
     - php .travis/phpdoc-checker.php docs/api/checkstyle.xml
 
