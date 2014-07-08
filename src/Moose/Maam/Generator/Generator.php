@@ -30,6 +30,12 @@ class Generator
      */
     protected $sourcePath;
 
+    /**
+     * Constructor
+     *
+     * @param string $sourcePath
+     * @param string $generationPath
+     */
     public function __construct($sourcePath, $generationPath)
     {
         AnnotationRegistry::registerLoader(
@@ -104,6 +110,13 @@ class Generator
         ];
     }
 
+    /**
+     * Uses generate<shortname> methods to generate the new method code.
+     *
+     * @param \Doctrine\Common\Annotations\Annotation[] $annotations
+     * @param string $propertyName
+     * @return array
+     */
     protected function generateMethods($annotations, $propertyName)
     {
         $methods = [];

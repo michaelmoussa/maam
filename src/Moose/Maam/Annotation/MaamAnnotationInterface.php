@@ -1,7 +1,12 @@
 <?php
-
+/**
+ * Maam
+ */
 namespace Moose\Maam\Annotation;
 
+/**
+ * Interface that Maam annotations must implement.
+ */
 interface MaamAnnotationInterface
 {
     /**

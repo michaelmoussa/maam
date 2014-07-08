@@ -1,10 +1,15 @@
 <?php
-
+/**
+ * Maam
+ */
 namespace Moose\Maam;
 
 use Composer\Autoload\ClassLoader;
 use RuntimeException;
 
+/**
+ * Main Maam object that handles initialization and triggers generation.
+ */
 class Maam
 {
     const MODE_DEVELOPMENT = 1;
@@ -45,6 +50,11 @@ class Maam
      */
     protected $moduleRoot;
 
+    /**
+     * Constructor
+     *
+     * @param int $mode
+     */
     public function __construct($mode = self::MODE_PRODUCTION)
     {
         $this->setMode($mode);
