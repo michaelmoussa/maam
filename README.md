@@ -3,7 +3,7 @@
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/michaelmoussa/maam/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/michaelmoussa/maam/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/michaelmoussa/maam/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/michaelmoussa/maam/?branch=master)
 [![Latest Stable Version](https://poser.pugx.org/michaelmoussa/maam/v/stable.png)](https://packagist.org/packages/michaelmoussa/maam)
-[![VersionEye](https://www.versioneye.com/user/projects/53c668d56c18d500aa000003/badge.svg)
+[![Dependency Status](https://www.versioneye.com/user/projects/53c668d56c18d500aa000003/badge.svg)](https://www.versioneye.com/user/projects/53c668d56c18d500aa000003)
 # (M)agic (A)ccessors (A)nd (M)utators
 
 Spare yourself the tedium of writing and testing countless getters and setters by generating them automagically!
