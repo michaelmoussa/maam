@@ -6,7 +6,8 @@ namespace Moose\Maam\Generator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Moose\Maam\Annotation\MaamAnnotationInterface;
+use Moose\Maam\Annotation\FluentAware;
+use Moose\Maam\Annotation\MaamAnnotation;
 use ReflectionClass;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
@@ -59,7 +60,7 @@ class Generator
         $finder = new Finder();
         $finder->in($this->sourcePath)->files()->name('*.php');
 
-        /** @var SplFileInfo $object */
+        /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $result = $this->generateClass($file->getPathname());
             if (!empty($result)) {
@@ -121,11 +122,10 @@ class Generator
     {
         $methods = [];
 
-        /** @var \Doctrine\Common\Annotations\Annotation $annotation */
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof MaamAnnotationInterface) {
+            if ($annotation instanceof MaamAnnotation) {
                 $generationMethodName = 'generate' . $annotation->getShortName();
-                $methods[] = call_user_func([$this, $generationMethodName], $propertyName);
+                $methods[] = call_user_func([$this, $generationMethodName], $propertyName, $annotation);
             }
         }
 
@@ -217,35 +217,25 @@ HEREDOC;
      * Writes the setter.
      *
      * @param string $propertyName The name of the property
+     * @param FluentAware $annotation
      * @return string
      */
-    protected function generateSetter($propertyName)
+    protected function generateSetter($propertyName, FluentAware $annotation)
     {
-        $methodSuffix = ucfirst($propertyName);
-
-        return <<<HEREDOC
-    /**
-     * Sets the ${propertyName}.
-     *
-     * @param mixed \$${propertyName}
-     * @return void
-     */
-    public function set${methodSuffix}(\$${propertyName})
-    {
-        \$this->${propertyName} = \$${propertyName};
-    }
-HEREDOC;
+        $setterGenerator = new Setter();
+        return $setterGenerator->generate($propertyName, $annotation);
     }
 
     /**
      * Writes both the getter and the setter.
      *
      * @param string $propertyName The name of the property
+     * @param FluentAware $annotation
      * @return string
      */
-    protected function generateBoth($propertyName)
+    protected function generateBoth($propertyName, FluentAware $annotation)
     {
-        return $this->generateGetter($propertyName) . "\n\n" . $this->generateSetter($propertyName);
+        return $this->generateGetter($propertyName) . "\n\n" . $this->generateSetter($propertyName, $annotation);
     }
 
     /**

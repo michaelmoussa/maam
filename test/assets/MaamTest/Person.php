@@ -12,12 +12,12 @@ class Person
     protected $firstName;
 
     /**
-     * @Maam\Both
+     * @Maam\Both(fluent=true)
      */
     protected $middleInitial;
 
     /**
-     * @Maam\Setter
+     * @Maam\Setter(fluent=true)
      */
     protected $lastName;
 

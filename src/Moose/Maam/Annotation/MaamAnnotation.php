@@ -7,7 +7,7 @@ namespace Moose\Maam\Annotation;
 /**
  * Interface that Maam annotations must implement.
  */
-interface MaamAnnotationInterface
+interface MaamAnnotation
 {
     /**
      * Returns the "short name" of this annotation, which will be used to invoke the

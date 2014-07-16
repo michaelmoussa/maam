@@ -11,7 +11,7 @@ use Doctrine\Common\Annotations\Annotation;
  *
  * @Annotation
  */
-class Isser extends Annotation implements MaamAnnotationInterface
+class Isser extends Annotation implements MaamAnnotation
 {
     /**
      * {@inheritDoc}
