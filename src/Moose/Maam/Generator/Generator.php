@@ -6,7 +6,7 @@ namespace Moose\Maam\Generator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Moose\Maam\Annotation\FluentAwareInterface;
+use Moose\Maam\Annotation\FluentAware;
 use Moose\Maam\Annotation\MaamAnnotationInterface;
 use ReflectionClass;
 use SplFileInfo;
@@ -218,10 +218,10 @@ HEREDOC;
      * Writes the setter.
      *
      * @param string $propertyName The name of the property
-     * @param FluentAwareInterface $annotation
+     * @param FluentAware $annotation
      * @return string
      */
-    protected function generateSetter($propertyName, FluentAwareInterface $annotation)
+    protected function generateSetter($propertyName, FluentAware $annotation)
     {
         $setterGenerator = new Setter();
         return $setterGenerator->generate($propertyName, $annotation);
@@ -231,10 +231,10 @@ HEREDOC;
      * Writes both the getter and the setter.
      *
      * @param string $propertyName The name of the property
-     * @param FluentAwareInterface $annotation
+     * @param FluentAware $annotation
      * @return string
      */
-    protected function generateBoth($propertyName, FluentAwareInterface $annotation)
+    protected function generateBoth($propertyName, FluentAware $annotation)
     {
         return $this->generateGetter($propertyName) . "\n\n" . $this->generateSetter($propertyName, $annotation);
     }

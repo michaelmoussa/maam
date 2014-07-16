@@ -4,7 +4,7 @@
  */
 namespace Moose\Maam\Generator;
 
-use Moose\Maam\Annotation\FluentAwareInterface;
+use Moose\Maam\Annotation\FluentAware;
 
 /**
  * Class to generate setter code.
@@ -15,10 +15,10 @@ class Setter
      * Writes the setter.
      *
      * @param string $propertyName The name of the property
-     * @param FluentAwareInterface $annotation
+     * @param FluentAware $annotation
      * @return string
      */
-    public function generate($propertyName, FluentAwareInterface $annotation)
+    public function generate($propertyName, FluentAware $annotation)
     {
         $methodSuffix = ucfirst($propertyName);
 

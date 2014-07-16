@@ -11,7 +11,7 @@ use Doctrine\Common\Annotations\Annotation;
  *
  * @Annotation
  */
-class Both extends Annotation implements MaamAnnotationInterface, FluentAwareInterface
+class Both extends Annotation implements MaamAnnotationInterface, FluentAware
 {
     /**
      * Whether or not to generate a Fluent interface when writing the setter.
