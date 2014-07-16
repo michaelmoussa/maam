@@ -12,12 +12,12 @@ class Person
     protected $firstName;
 
     /**
-     * @Maam\Both
+     * @Maam\Both(fluent=true)
      */
     protected $middleInitial;
 
     /**
-     * @Maam\Setter
+     * @Maam\Setter(fluent=true)
      */
     protected $lastName;
 
@@ -61,22 +61,24 @@ class Person
      * Sets the middleInitial.
      *
      * @param mixed $middleInitial
-     * @return void
+     * @return self
      */
     public function setMiddleInitial($middleInitial)
     {
         $this->middleInitial = $middleInitial;
+        return $this;
     }
 
     /**
      * Sets the lastName.
      *
      * @param mixed $lastName
-     * @return void
+     * @return self
      */
     public function setLastName($lastName)
     {
         $this->lastName = $lastName;
+        return $this;
     }
 
     /**

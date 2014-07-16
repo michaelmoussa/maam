@@ -6,6 +6,7 @@ namespace Moose\Maam\Generator;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
+use Moose\Maam\Annotation\FluentAwareInterface;
 use Moose\Maam\Annotation\MaamAnnotationInterface;
 use ReflectionClass;
 use SplFileInfo;
@@ -125,7 +126,7 @@ class Generator
         foreach ($annotations as $annotation) {
             if ($annotation instanceof MaamAnnotationInterface) {
                 $generationMethodName = 'generate' . $annotation->getShortName();
-                $methods[] = call_user_func([$this, $generationMethodName], $propertyName);
+                $methods[] = call_user_func([$this, $generationMethodName], $propertyName, $annotation);
             }
         }
 
@@ -217,35 +218,25 @@ HEREDOC;
      * Writes the setter.
      *
      * @param string $propertyName The name of the property
+     * @param FluentAwareInterface $annotation
      * @return string
      */
-    protected function generateSetter($propertyName)
+    protected function generateSetter($propertyName, FluentAwareInterface $annotation)
     {
-        $methodSuffix = ucfirst($propertyName);
-
-        return <<<HEREDOC
-    /**
-     * Sets the ${propertyName}.
-     *
-     * @param mixed \$${propertyName}
-     * @return void
-     */
-    public function set${methodSuffix}(\$${propertyName})
-    {
-        \$this->${propertyName} = \$${propertyName};
-    }
-HEREDOC;
+        $setterGenerator = new Setter();
+        return $setterGenerator->generate($propertyName, $annotation);
     }
 
     /**
      * Writes both the getter and the setter.
      *
      * @param string $propertyName The name of the property
+     * @param FluentAwareInterface $annotation
      * @return string
      */
-    protected function generateBoth($propertyName)
+    protected function generateBoth($propertyName, FluentAwareInterface $annotation)
     {
-        return $this->generateGetter($propertyName) . "\n\n" . $this->generateSetter($propertyName);
+        return $this->generateGetter($propertyName) . "\n\n" . $this->generateSetter($propertyName, $annotation);
     }
 
     /**

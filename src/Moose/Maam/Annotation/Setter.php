@@ -11,8 +11,25 @@ use Doctrine\Common\Annotations\Annotation;
  *
  * @Annotation
  */
-class Setter extends Annotation implements MaamAnnotationInterface
+class Setter extends Annotation implements MaamAnnotationInterface, FluentAwareInterface
 {
+    /**
+     * Whether or not to generate a Fluent interface for this setter.
+     *
+     * @var bool
+     */
+    protected $fluent = false;
+
+    /**
+     * {@inheritDoc}
+     *
+     * @return bool
+     */
+    public function getFluent()
+    {
+        return $this->fluent;
+    }
+
     /**
      * {@inheritDoc}
      *
