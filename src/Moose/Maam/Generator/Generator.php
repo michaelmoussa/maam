@@ -7,7 +7,7 @@ namespace Moose\Maam\Generator;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Moose\Maam\Annotation\FluentAware;
-use Moose\Maam\Annotation\MaamAnnotationInterface;
+use Moose\Maam\Annotation\MaamAnnotation;
 use ReflectionClass;
 use SplFileInfo;
 use Symfony\Component\Finder\Finder;
@@ -122,9 +122,8 @@ class Generator
     {
         $methods = [];
 
-        /** @var \Doctrine\Common\Annotations\Annotation $annotation */
         foreach ($annotations as $annotation) {
-            if ($annotation instanceof MaamAnnotationInterface) {
+            if ($annotation instanceof MaamAnnotation) {
                 $generationMethodName = 'generate' . $annotation->getShortName();
                 $methods[] = call_user_func([$this, $generationMethodName], $propertyName, $annotation);
             }

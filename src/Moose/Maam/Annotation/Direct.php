@@ -11,7 +11,7 @@ use Doctrine\Common\Annotations\Annotation;
  *
  * @Annotation
  */
-class Direct extends Annotation implements MaamAnnotationInterface
+class Direct extends Annotation implements MaamAnnotation
 {
     /**
      * {@inheritDoc}
