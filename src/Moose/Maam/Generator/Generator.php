@@ -60,7 +60,7 @@ class Generator
         $finder = new Finder();
         $finder->in($this->sourcePath)->files()->name('*.php');
 
-        /** @var SplFileInfo $object */
+        /** @var SplFileInfo $file */
         foreach ($finder as $file) {
             $result = $this->generateClass($file->getPathname());
             if (!empty($result)) {
